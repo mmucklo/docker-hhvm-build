@@ -17,7 +17,7 @@ RUN cd /root/src/dwarf-20140413 && ./configure --prefix=/usr/local && make dd &&
 RUN cd /root/src && git clone git://github.com/facebook/hhvm.git && cd hhvm && git checkout HHVM-3.2
 RUN cd /root/src/hhvm && git submodule update --init --recursive
 RUN cd /root/src/hhvm && sed -i'' 's|freetype/config/ftheader.h|freetype2/config/ftheader.h|' hphp/runtime/ext/gd/libgd/gdft.cpp
-RUN cd /root/src/hhvm && cmake -D CMAKE_PREFIX_PATH=/usr/local -D DOUBLE_CONVERSION_INCLUDE_DIR="/usr/local/include/double-conversion" -D FREETYPE_INCLUDE_DIRS="/usr/include/freetype2" -D LIBDWARF_LIBRARIES="/usr/local/lib/libdwarf.a" -D LIBDWARF_INCLUDE_DIRS="/usr/local/include/dwarf" .
+RUN cd /root/src/hhvm && cmake -D CMAKE_PREFIX_PATH=/usr/local -D DOUBLE_CONVERSION_INCLUDE_DIR="/usr/local/include/double-conversion" -D DOUBLE_CONVERSION_LIBRARY="/usr/local/lib/libdouble-conversion.a" -D FREETYPE_INCLUDE_DIRS="/usr/include/freetype2" -D LIBDWARF_LIBRARIES="/usr/local/lib/libdwarf.a" -D LIBDWARF_INCLUDE_DIRS="/usr/local/include/dwarf" .
 RUN cd /root/src/hhvm && make install
 RUN chmod a+x /root/src/hhvm/hphp/tools/hphpize/hphpize
 RUN cd /root/src && git clone git://github.com/mongodb/mongo-c-driver && cd mongo-c-driver && git checkout b5b25a3ee68209291df985ef58f95bef3dbe45ba
