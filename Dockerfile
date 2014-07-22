@@ -14,7 +14,7 @@ RUN cd /root/src/double-conversion-1.1.5 && cmake . && make install
 RUN cd /root/software && wget http://www.prevanders.net/libdwarf-20140413.tar.gz
 RUN cd /root/src && tar xzf ../software/libdwarf-20140413.tar.gz
 RUN cd /root/src/dwarf-20140413 && ./configure --prefix=/usr/local && make dd && cp libdwarf/libdwarf.a /usr/local/lib/. && mkdir -p /usr/local/include/dwarf && cp libdwarf/*.h /usr/local/include/dwarf/.
-RUN cd /root/src && git clone git://github.com/facebook/hhvm.git && git checkout c380b4972e48b708cd2844c7af501e0638ce0914
+RUN cd /root/src && git clone git://github.com/facebook/hhvm.git && cd hhvm && git checkout c380b4972e48b708cd2844c7af501e0638ce0914
 RUN cd /root/src/hhvm && git submodule update --init --recursive
 RUN cd /root/src/hhvm && sed -i'' 's|freetype/config/ftheader.h|freetype2/config/ftheader.h|' hphp/runtime/ext/gd/libgd/gdft.cpp
 RUN cd /root/src/hhvm && cmake -D CMAKE_PREFIX_PATH=/usr/local -D DOUBLE_CONVERSION_INCLUDE_DIR="/usr/local/include/double-conversion" -D DOUBLE_CONVERSION_LIBRARY="/usr/local/lib/libdouble-conversion.a" -D FREETYPE_INCLUDE_DIRS="/usr/include/freetype2" -D LIBDWARF_LIBRARIES="/usr/local/lib/libdwarf.a" -D LIBDWARF_INCLUDE_DIRS="/usr/local/include/dwarf" .
