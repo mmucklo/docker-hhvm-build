@@ -1,8 +1,9 @@
-FROM ubuntu:14.10
+FROM centos:centos7
 MAINTAINER Matthew J. Mucklo <matthew.j.mucklo@qvc.com>
-RUN apt-get -qq update
-RUN apt-get -qqy upgrade
-RUN apt-get -qqy install autoconf automake binutils-dev build-essential cmake g++ git libboost-dev libboost-filesystem-dev libboost-program-options-dev libboost-regex-dev libboost-system-dev libboost-thread-dev libbz2-dev libc-client-dev libldap2-dev libc-client2007e-dev libcap-dev libcurl4-openssl-dev libelf-dev libexpat-dev libgd2-xpm-dev libgoogle-glog-dev libgoogle-perftools-dev libicu-dev libjemalloc-dev libmcrypt-dev libmemcached-dev libmysqlclient-dev libncurses-dev libonig-dev libpcre3-dev libreadline-dev libtbb-dev libtool libxml2-dev zlib1g-dev libevent-dev libmagickwand-dev libinotifytools0-dev libiconv-hook-dev libedit-dev libiberty-dev libxslt1-dev ocaml-native-compilers php5-imagick libyaml-dev libelf-dev libsqlite3-dev unixodbc-dev libmyodbc liblz4-dev libzip-dev wget
+RUN yum -y update
+RUN yum -y upgrade
+RUN yum -y install epel-release
+RUN yum -y install gcc gcc-c++ cmake git gmp-devel ocaml psmisc binutils-devel boost-devel libmcrypt-devel libmemcached-devel jemalloc-devel libevent-devel sqlite-devel libxslt-devel libicu-devel tbb-devel libzip-devel mysql-devel bzip2-devel openldap-devel readline-devel elfutils-libelf-devel libcap-devel libyaml-devel libedit-devel lz4-devel libvpx-devel unixODBC-devel libgmp-devel libpng-devel ImageMagick-devel curl-devel expat-devel openssl-devel wget curl curl-devel tar bzip2 patch make
 RUN mkdir /root/software && cd /root/software && wget http://ftp.gnu.org/gnu/libiconv/libiconv-1.14.tar.gz
 RUN cd /root && mkdir src && cd src && tar xzf ../software/libiconv-1.14.tar.gz
 COPY libiconv_stdio.in.h.patch /root/src/libiconv-1.14/srclib/
@@ -11,12 +12,17 @@ RUN cd /root/src/libiconv-1.14 && ./configure --prefix=/usr/local && make instal
 RUN cd /root/software && wget https://double-conversion.googlecode.com/files/double-conversion-1.1.5.tar.gz
 RUN cd /root/src && mkdir double-conversion-1.1.5 && cd double-conversion-1.1.5 && tar xzf ../../software/double-conversion-1.1.5.tar.gz
 RUN cd /root/src/double-conversion-1.1.5 && cmake . && make install
+RUN cd /root/software && wget https://google-glog.googlecode.com/files/glog-0.3.3.tar.gz
+RUN cd /root/src && tar xzf ../software/glog-0.3.3.tar.gz
+RUN cd /root/src/glog-0.3.3 && ./configure --prefix=/usr/local && make install
+RUN cd /root/software && wget http://www.geocities.jp/kosako3/oniguruma/archive/onig-5.9.5.tar.gz
+RUN cd /root/src && tar xzf ../software/onig-5.9.5.tar.gz
+RUN cd /root/src/onig-5.9.5 && ./configure --prefix=/usr/local && make install
 RUN cd /root/software && wget http://www.prevanders.net/libdwarf-20140413.tar.gz
 RUN cd /root/src && tar xzf ../software/libdwarf-20140413.tar.gz
 RUN cd /root/src/dwarf-20140413 && ./configure --prefix=/usr/local && make dd && cp libdwarf/libdwarf.a /usr/local/lib/. && mkdir -p /usr/local/include/dwarf && cp libdwarf/*.h /usr/local/include/dwarf/.
 RUN cd /root/src && git clone git://github.com/facebook/hhvm.git && cd hhvm && git checkout 7c1919f48c8d432c4987fc93afe6f4367389934c
 RUN cd /root/src/hhvm && git submodule update --init --recursive
-RUN cd /root/src/hhvm && sed -i'' 's|freetype/config/ftheader.h|freetype2/config/ftheader.h|' hphp/runtime/ext/gd/libgd/gdft.cpp
 RUN cd /root/src/hhvm && cmake -D CMAKE_PREFIX_PATH=/usr/local -D DOUBLE_CONVERSION_INCLUDE_DIR="/usr/local/include/double-conversion" -D DOUBLE_CONVERSION_LIBRARY="/usr/local/lib/libdouble-conversion.a" -D FREETYPE_INCLUDE_DIRS="/usr/include/freetype2" -D LIBDWARF_LIBRARIES="/usr/local/lib/libdwarf.a" -D LIBDWARF_INCLUDE_DIRS="/usr/local/include/dwarf" .
 RUN cd /root/src/hhvm && make install
 RUN chmod a+x /root/src/hhvm/hphp/tools/hphpize/hphpize
@@ -24,7 +30,7 @@ RUN cd /root/src && git clone git://github.com/mongodb/mongo-c-driver && cd mong
 RUN cd /root/src/mongo-c-driver && ./autogen.sh
 RUN cd /root/src/mongo-c-driver && make install
 RUN cd /root/src && git clone git://github.com/mongofill/mongofill-hhvm && cd mongofill-hhvm && git checkout 5891ae10f1d3acf666c181dda4acdff63fe664d0
-RUN cd /root/src/mongofill-hhvm && export HPHP_HOME=/root/src/hhvm && ./build.sh 
+RUN cd /root/src/mongofill-hhvm && export HPHP_HOME=/root/src/hhvm && ./build.sh
 RUN echo "net.core.somaxconn=65535" >> /etc/sysctl.conf
 RUN echo "*               hard    nofile          65535" >> /etc/security/limits.conf
-RUN echo "*               soft    nofile          65535" >> /etc/security/limits.conf 
+RUN echo "*               soft    nofile          65535" >> /etc/security/limits.conf
