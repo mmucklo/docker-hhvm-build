@@ -3,7 +3,7 @@ MAINTAINER Matthew J. Mucklo <matthew.j.mucklo@qvc.com>
 RUN yum -y update
 RUN yum -y upgrade
 RUN yum -y install epel-release
-RUN yum -y install gcc gcc-c++ cmake git gmp-devel ocaml psmisc binutils-devel boost-devel libmcrypt-devel libmemcached-devel jemalloc-devel libevent-devel sqlite-devel libxslt-devel libicu-devel tbb-devel libzip-devel mysql-devel bzip2-devel openldap-devel readline-devel elfutils-libelf-devel libcap-devel libyaml-devel libedit-devel lz4-devel libvpx-devel unixODBC-devel libgmp-devel libpng-devel ImageMagick-devel curl-devel expat-devel openssl-devel wget curl curl-devel tar bzip2 patch make
+RUN yum -y install gcc gcc-c++ cmake git gmp-devel ocaml psmisc binutils-devel boost-devel libmcrypt-devel libmemcached-devel jemalloc-devel libevent-devel sqlite-devel libxslt-devel libicu-devel tbb-devel libzip-devel mysql-devel bzip2-devel openldap-devel readline-devel elfutils-libelf-devel libcap-devel libyaml-devel libedit-devel lz4-devel libvpx-devel unixODBC-devel libgmp-devel libpng-devel ImageMagick-devel curl-devel expat-devel openssl-devel wget curl curl-devel tar bzip2 patch make libtool
 RUN mkdir /root/software && cd /root/software && wget http://ftp.gnu.org/gnu/libiconv/libiconv-1.14.tar.gz
 RUN cd /root && mkdir src && cd src && tar xzf ../software/libiconv-1.14.tar.gz
 COPY libiconv_stdio.in.h.patch /root/src/libiconv-1.14/srclib/
