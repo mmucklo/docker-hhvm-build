@@ -12,7 +12,7 @@ RUN cd /root/src/libiconv-1.14 && ./configure --prefix=/usr/local && make instal
 RUN cd /root/software && wget http://c-ares.haxx.se/download/c-ares-1.10.0.tar.gz
 RUN cd /root/src && tar xzf ../software/c-ares-1.10.0.tar.gz
 RUN cd /root/src/c-ares-1.10.0 && ./configure --prefix /usr/local
-RUN cd /root/software && wget wget http://curl.haxx.se/download/curl-7.39.0.tar.bz2
+RUN cd /root/software && wget http://curl.haxx.se/download/curl-7.39.0.tar.bz2
 RUN cd /root/src && tar xjf ../software/curl-7.39.0.tar.bz2
 RUN cd /root/src/curl-7.39.0 && ./configure --prefix=/usr/local --enable-ares=/usr/local && make install
 RUN cd /root/software && wget https://double-conversion.googlecode.com/files/double-conversion-1.1.5.tar.gz
