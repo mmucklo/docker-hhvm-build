@@ -36,7 +36,9 @@ RUN cd /root/src && git clone git://github.com/mongodb/mongo-c-driver && cd mong
 RUN cd /root/src/mongo-c-driver && ./autogen.sh
 RUN cd /root/src/mongo-c-driver && make install
 RUN cd /root/src && git clone git://github.com/mongofill/mongofill-hhvm && cd mongofill-hhvm && git checkout 5891ae10f1d3acf666c181dda4acdff63fe664d0
-RUN cd /root/src/mongofill-hhvm && export HPHP_HOME=/root/src/hhvm && ./build.sh
+RUN cd /root/src/mongofill-hhvm && export HPHP_HOME=/root/src/hhvm && ./build.sh && make install
 RUN echo "net.core.somaxconn=65535" >> /etc/sysctl.conf
 RUN echo "*               hard    nofile          65535" >> /etc/security/limits.conf
 RUN echo "*               soft    nofile          65535" >> /etc/security/limits.conf
+RUN /bin/rm -rf /root/src && /bin/rm -rf /root/software
+RUN yum -y remove gcc gcc-c++ cmake git gmp-devel binutils-devel boost-devel libmcrypt-devel libmemcached-devel jemalloc-devel libevent-devel sqlite-devel libxslt-devel libicu-devel tbb-devel libzip-devel mysql-devel bzip2-devel openldap-devel readline-devel elfutils-libelf-devel libcap-devel libyaml-devel libedit-devel lz4-devel libvpx-devel unixODBC-devel libgmp-devel libpng-devel ImageMagick-devel expat-devel openssl-devel patch make libtool libidn-devel
